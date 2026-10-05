@@ -16,17 +16,9 @@ public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", length = 150)
     private String nombre;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "curso_evento",
-            joinColumns = @JoinColumn(name = "id_curso"),
-            inverseJoinColumns = @JoinColumn(name = "id_evento")
-    )
-    private List<Evento> evento;
 }

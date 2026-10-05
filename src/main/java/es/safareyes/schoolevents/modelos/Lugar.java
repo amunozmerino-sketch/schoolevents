@@ -18,9 +18,9 @@ public class Lugar {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", length = 100)
     private String nombre;
 
-    @Column(name = "aforo_max")
+    @Column(name = "aforo_max", precision = 3)
     private Integer aforoMax;
 }
