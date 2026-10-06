@@ -15,10 +15,12 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
 
     @Query("""
     SELECT DISTINCT e FROM Evento e
-    WHERE e.categoria IN :listaCategorias
-        OR e.curso IN :listaCursos
-        OR LOWER(e.titulo) LIKE LOWER(:texto)
-        OR e.fechaHoraIni IN :listaFechas
+    WHERE (:listaCategorias IS NULL OR e.categoria IN :listaCategorias)
+        AND (:listaCursos IS NULL OR e.curso IN :listaCursos)
+        AND (:texto IS NULL OR LOWER(e.titulo) LIKE LOWER(:texto))
+        AND (:fechaIni IS NULL OR (e.fechaHoraIni = :fechaIni OR e.fechaHoraIni BETWEEN :fechaIni AND :fechaFin))
 """)
     List<Evento> buscarEventosFiltrados();
+
+
 }
