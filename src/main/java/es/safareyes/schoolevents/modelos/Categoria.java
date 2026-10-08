@@ -22,6 +22,6 @@ public class Categoria {
     @Column(name = "icono", length = 150)
     private String icono;
 
-    @Column(name = "color", precision = 1)
-    private Integer color;
+    @Column(name = "color", length = 7)
+    private String color;
 }

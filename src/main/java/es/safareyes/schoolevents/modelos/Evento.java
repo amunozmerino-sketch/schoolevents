@@ -3,6 +3,7 @@ package es.safareyes.schoolevents.modelos;
 import es.safareyes.schoolevents.enums.EstadoEvento;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GeneratedColumn;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,6 +41,13 @@ public class Evento {
     @Column(name = "aforo_max", precision = 3)
     private Integer aforoMax;
 
+    @Column(name = "aforo_actual", precision = 3)
+    private Integer aforoActual;
+    
+    @Column(name = "plazas_libres", precision = 3, insertable = false, updatable = false)
+    @GeneratedColumn("aforo_max - aforo_actual")
+    private Integer plazasLibres;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_lugar")
     private Lugar lugar;
@@ -59,4 +67,7 @@ public class Evento {
             inverseJoinColumns = @JoinColumn(name = "id_categoria")
     )
     private List<Categoria> categoria;
+
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    private List<Requisito> requisito;
 }

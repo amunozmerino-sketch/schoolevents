@@ -27,6 +27,6 @@ public class UsuarioInscrito {
     @Column(name = "fecha_hora")
     private LocalDateTime fechaHora;
 
-    @Column(name = "en_espera") // Añadir campo a BD
+    @Column(name = "en_espera")
     private Boolean enEspera;
 }
