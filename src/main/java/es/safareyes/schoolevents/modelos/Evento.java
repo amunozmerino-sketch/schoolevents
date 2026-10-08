@@ -70,4 +70,7 @@ public class Evento {
 
     @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
     private List<Requisito> requisito;
+
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    private List<UsuarioInscrito> inscritos;
 }

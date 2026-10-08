@@ -53,4 +53,7 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "id_evento")
     )
     private List<Evento> eventoInteresado;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<UsuarioInscrito> inscripcion;
 }

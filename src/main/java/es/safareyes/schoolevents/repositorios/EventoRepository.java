@@ -3,9 +3,7 @@ package es.safareyes.schoolevents.repositorios;
 import es.safareyes.schoolevents.dto.EventosDelMes;
 import es.safareyes.schoolevents.modelos.Evento;
 import es.safareyes.schoolevents.dto.DetallesEvento;
-import org.jspecify.annotations.NullMarked;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import es.safareyes.schoolevents.modelos.UsuarioInscrito;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -45,5 +43,19 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
     WHERE e.id = :idEvento
     GROUP BY e.id, l.nombre, e.plazas_libres;
     """, nativeQuery = true)
-    List<DetallesEvento> detallesEvento(@Param("idEvento") Integer idEvento);
+    DetallesEvento detallesEvento(@Param("idEvento") Integer idEvento);
+
+    @Query("""
+    SELECT i
+    FROM Evento e JOIN e.inscritos i
+    WHERE e.id = :idEvento AND i.enEspera = FALSE
+    """)
+    List<UsuarioInscrito> inscripciones(@Param("idEvento") Integer idEvento);
+
+    @Query("""
+    SELECT i
+    FROM Evento e JOIN e.inscritos i
+    WHERE e.id = :idEvento AND i.enEspera = TRUE
+    """)
+    List<UsuarioInscrito> listaDeEspera(@Param("idEvento") Integer idEvento);
 }

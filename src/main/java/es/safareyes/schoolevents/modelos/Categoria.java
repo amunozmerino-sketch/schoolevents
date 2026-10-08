@@ -1,5 +1,6 @@
 package es.safareyes.schoolevents.modelos;
 
+import es.safareyes.schoolevents.enums.ColorCategoria;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class Categoria {
     @Column(name = "icono", length = 150)
     private String icono;
 
-    @Column(name = "color", length = 7)
-    private String color;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "color", precision = 1)
+    private ColorCategoria color;
 }
