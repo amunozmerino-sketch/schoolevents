@@ -18,5 +18,7 @@ class CursoRepositoryTest {
     @Test
     void consultarCursos() {
         List<Curso> cursos = cursoRepository.findAll();
+
+        cursos.forEach(curso -> System.out.println(curso.getNombre()));
     }
 }
