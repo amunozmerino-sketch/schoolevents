@@ -1,6 +1,8 @@
 package es.safareyes.schoolevents;
 
 import es.safareyes.schoolevents.modelos.Evento;
+import es.safareyes.schoolevents.modelos.Notificacion;
+import es.safareyes.schoolevents.repositorios.UsuarioInscritoRepository;
 import es.safareyes.schoolevents.repositorios.UsuarioRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,13 @@ class UsuarioRepositoryTest {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioInscritoRepository usuarioInscritoRepository;
+
     @Test
     void consultarAgendaPersonal() {
         List<Evento> eventosSeguidos = usuarioRepository.buscarEventosSeguidos(10);
-        List<Evento> eventosInscritos = usuarioRepository.buscarEventosInscritos(10);
+        List<Evento> eventosInscritos = usuarioInscritoRepository.buscarEventosInscritos(10);
 
         System.out.println("Eventos seguidos:");
 
@@ -31,6 +36,17 @@ class UsuarioRepositoryTest {
 
         eventosInscritos.forEach(ei -> System.out.println(
                     "Título: " + ei.getTitulo() + "\n"
+                )
+        );
+    }
+
+    @Test
+    void consultarNotificaciones() {
+        List<Notificacion> notificaciones = usuarioRepository.buscarNotificaciones(5);
+
+        notificaciones.forEach(n -> System.out.println(
+                    "Mensaje: " + n.getMensaje() + " | " +
+                    "Fecha y hora: " + n.getFechaHora() + "\n"
                 )
         );
     }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 public class InformeParticipacion {
-    private String categoria; // Usar alias
-    private String curso; // Usar alias
-    private Long participacion; // Usar alias
+    private String categoria;
+    private String curso;
+    private Long participacion;
 }

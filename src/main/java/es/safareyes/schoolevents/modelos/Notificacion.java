@@ -22,6 +22,9 @@ public class Notificacion {
     @Column(name = "mensaje")
     private String mensaje;
 
+    @Column(name = "leida", nullable = false)
+    private Boolean leida;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_evento")
     private Evento evento;

@@ -43,7 +43,7 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_notificacion")
     )
-    private List<Notificacion> notificacion;
+    private List<Notificacion> notificaciones;
 
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -52,8 +52,5 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_evento")
     )
-    private List<Evento> eventoInteresado;
-
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private List<UsuarioInscrito> inscripcion;
+    private List<Evento> eventosInteresados;
 }

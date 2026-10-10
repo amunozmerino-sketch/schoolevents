@@ -20,7 +20,7 @@ class CategoriaRepositoryTest {
         List<Categoria> categorias = categoriaRepository.findAll();
 
         categorias.forEach(c -> System.out.println(
-                "Nombre: " + c.getNombre() + " | " + "Icono: " + c.getIcono() + " | " + "Color: " + c.getColor() + "\n"
+                    "Nombre: " + c.getNombre() + " | " + "Icono: " + c.getIcono() + " | " + "Color: " + c.getColor() + "\n"
                 )
         );
     }

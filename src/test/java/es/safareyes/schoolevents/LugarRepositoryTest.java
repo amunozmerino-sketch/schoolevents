@@ -20,7 +20,7 @@ class LugarRepositoryTest {
         List<Lugar> lugares = lugarRepository.findAll();
 
         lugares.forEach(l -> System.out.println(
-                "Nombre: " + l.getNombre() + " | " + "Aforo máximo: " + l.getAforoMax() + "\n"
+                    "Nombre: " + l.getNombre() + " | " + "Aforo máximo: " + l.getAforoMax() + "\n"
                 )
         );
     }

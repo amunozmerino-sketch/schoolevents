@@ -2,13 +2,14 @@ package es.safareyes.schoolevents;
 
 import es.safareyes.schoolevents.dto.DetallesEvento;
 import es.safareyes.schoolevents.dto.EventosDelMes;
-import es.safareyes.schoolevents.modelos.UsuarioInscrito;
+import es.safareyes.schoolevents.modelos.Evento;
 import es.safareyes.schoolevents.repositorios.EventoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,10 +25,11 @@ class EventoRepositoryTest {
 
 
         System.out.println(
-                "Lugar: " + detallesEvento.getLugar() + " | " +
-                "Cursos: " + Arrays.toString(detallesEvento.getCursos()) + " | " +
-                "Plazas libres: " + detallesEvento.getPlazasLibres() + " | " +
-                "Requisitos: " + Arrays.toString(detallesEvento.getRequisitos())
+                    "Lugar: " + detallesEvento.getLugar() + " | " +
+                    "Cursos: " + Arrays.toString(detallesEvento.getCursos()) + " | " +
+                    "Plazas libres: " + detallesEvento.getPlazasLibres() + " | " +
+                    "Requisitos: " + Arrays.toString(detallesEvento.getRequisitos()
+                )
         );
     }
 
@@ -46,23 +48,15 @@ class EventoRepositoryTest {
     }
 
     @Test
-    void consultarInscripciones() {
-        List<UsuarioInscrito> usuarioInscritos = eventoRepository.inscripciones(8);
-        List<UsuarioInscrito> listaDeEspera = eventoRepository.listaDeEspera(8);
+    void consultarEventosFiltrados() {
+        List<Integer> cursos = List.of(6, 7, 10, 12, 13);
+        List<Integer> categorias = List.of(1, 2, 3, 4, 5, 6);
+        LocalDateTime desde = LocalDateTime.of(2026,9,1,0,0,0);
+        LocalDateTime hasta = LocalDateTime.of(2026,12,31,23,59,59);
+        List<Evento> eventosFiltrados = eventoRepository.buscarEventosFiltrados(cursos, categorias, null, desde, hasta);
 
-        System.out.println("Usuarios inscritos:");
-
-        usuarioInscritos.forEach(ui ->
-                System.out.println(
-                        "Nombre: " + ui.getUsuario().getNombre() + "  " + ui.getUsuario().getApellidos() + "\n"
-                )
-        );
-
-        System.out.println("Lista de espera:");
-
-        listaDeEspera.forEach(le ->
-                System.out.println(
-                        "Nombre: " + le.getUsuario().getNombre() + "  " + le.getUsuario().getApellidos() + "\n"
+        eventosFiltrados.forEach(ef -> System.out.println(
+                    "Título: " + ef.getTitulo()
                 )
         );
     }

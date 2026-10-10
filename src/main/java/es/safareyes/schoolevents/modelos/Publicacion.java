@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "publicacion")
@@ -29,4 +30,7 @@ public class Publicacion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "publicacion", fetch = FetchType.LAZY)
+    private List<FotoPublicacion> fotos;
 }

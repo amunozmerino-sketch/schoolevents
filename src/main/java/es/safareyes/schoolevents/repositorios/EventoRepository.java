@@ -3,25 +3,34 @@ package es.safareyes.schoolevents.repositorios;
 import es.safareyes.schoolevents.dto.EventosDelMes;
 import es.safareyes.schoolevents.modelos.Evento;
 import es.safareyes.schoolevents.dto.DetallesEvento;
-import es.safareyes.schoolevents.modelos.UsuarioInscrito;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface EventoRepository extends JpaRepository<Evento, Integer> {
 
-//    @Query("""
-//    SELECT DISTINCT e FROM Evento e
-//    WHERE e.categoria IN :listaCategorias
-//        OR e.curso IN :listaCursos
-//        OR LOWER(e.titulo) LIKE LOWER(:texto)
-//        OR e.fechaHoraIni IN :listaFechas
-//    """)
-//    List<Evento> buscarEventosFiltrados();
+    @Query(value = """
+    SELECT DISTINCT e.*
+    FROM evento e
+    JOIN categoria_evento ce ON e.id = ce.id_evento
+    JOIN curso_evento ce2 ON e.id = ce2.id_evento
+    WHERE (COALESCE(:cursos) IS NULL OR ce2.id_curso IN (:cursos))
+      AND (COALESCE(:categorias) IS NULL OR ce.id_categoria IN (:categorias))
+      AND (:titulo IS NULL OR e.titulo ILIKE CONCAT('%', :titulo, '%'))
+      AND (CAST(:desde AS TIMESTAMP) IS NULL OR
+          (e.fecha_hora_ini BETWEEN CAST(:desde AS TIMESTAMP) AND COALESCE(CAST(:hasta AS TIMESTAMP), CAST(:desde AS TIMESTAMP))))
+      AND e.estado = 0;
+    """, nativeQuery = true)
+    List<Evento> buscarEventosFiltrados(@Param("cursos") List<Integer> cursos,
+                                        @Param("categorias") List<Integer> categorias,
+                                        @Param("titulo") String titulo,
+                                        @Param("desde") LocalDateTime desde,
+                                        @Param("hasta") LocalDateTime hasta);
 
     @Query(value = """
     SELECT EXTRACT(DAY FROM e.fecha_hora_ini) AS dia, e.titulo, c.icono, c.color
@@ -44,18 +53,4 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
     GROUP BY e.id, l.nombre, e.plazas_libres;
     """, nativeQuery = true)
     DetallesEvento detallesEvento(@Param("idEvento") Integer idEvento);
-
-    @Query("""
-    SELECT i
-    FROM Evento e JOIN e.inscritos i
-    WHERE e.id = :idEvento AND i.enEspera = FALSE
-    """)
-    List<UsuarioInscrito> inscripciones(@Param("idEvento") Integer idEvento);
-
-    @Query("""
-    SELECT i
-    FROM Evento e JOIN e.inscritos i
-    WHERE e.id = :idEvento AND i.enEspera = TRUE
-    """)
-    List<UsuarioInscrito> listaDeEspera(@Param("idEvento") Integer idEvento);
 }

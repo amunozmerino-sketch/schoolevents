@@ -58,7 +58,7 @@ public class Evento {
             joinColumns = @JoinColumn(name = "id_evento"),
             inverseJoinColumns = @JoinColumn(name = "id_curso")
     )
-    private List<Curso> curso;
+    private List<Curso> cursos;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -66,11 +66,8 @@ public class Evento {
             joinColumns = @JoinColumn(name = "id_evento"),
             inverseJoinColumns = @JoinColumn(name = "id_categoria")
     )
-    private List<Categoria> categoria;
+    private List<Categoria> categorias;
 
     @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
-    private List<Requisito> requisito;
-
-    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
-    private List<UsuarioInscrito> inscritos;
+    private List<Requisito> requisitos;
 }
