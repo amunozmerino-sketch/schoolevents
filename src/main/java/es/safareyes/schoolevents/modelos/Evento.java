@@ -1,6 +1,6 @@
 package es.safareyes.schoolevents.modelos;
 
-import es.safareyes.schoolevents.enums.EstadoEvento;
+import es.safareyes.schoolevents.modelos.enums.EstadoEvento;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GeneratedColumn;
@@ -43,11 +43,7 @@ public class Evento {
 
     @Column(name = "aforo_actual", precision = 3)
     private Integer aforoActual;
-    
-    @Column(name = "plazas_libres", precision = 3, insertable = false, updatable = false)
-    @GeneratedColumn("aforo_max - aforo_actual")
-    private Integer plazasLibres;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_lugar")
     private Lugar lugar;
@@ -60,13 +56,8 @@ public class Evento {
     )
     private List<Curso> cursos;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "categoria_evento",
-            joinColumns = @JoinColumn(name = "id_evento"),
-            inverseJoinColumns = @JoinColumn(name = "id_categoria")
-    )
-    private List<Categoria> categorias;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Categoria categoria;
 
     @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
     private List<Requisito> requisitos;

@@ -1,6 +1,6 @@
 package es.safareyes.schoolevents.modelos;
 
-import es.safareyes.schoolevents.enums.ColorCategoria;
+import es.safareyes.schoolevents.modelos.enums.ColorCategoria;
 import jakarta.persistence.*;
 import lombok.*;
 

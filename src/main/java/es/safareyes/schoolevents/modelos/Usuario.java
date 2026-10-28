@@ -1,6 +1,6 @@
 package es.safareyes.schoolevents.modelos;
 
-import es.safareyes.schoolevents.enums.RolUsuario;
+import es.safareyes.schoolevents.modelos.enums.RolUsuario;
 import jakarta.persistence.*;
 import lombok.*;
 

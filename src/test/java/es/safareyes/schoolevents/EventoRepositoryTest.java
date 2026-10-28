@@ -1,7 +1,7 @@
 package es.safareyes.schoolevents;
 
-import es.safareyes.schoolevents.dto.DetallesEvento;
-import es.safareyes.schoolevents.dto.EventosDelMes;
+import es.safareyes.schoolevents.dto.response.EventoDetalleResponse;
+import es.safareyes.schoolevents.dto.response.EventoCalendarioResponse;
 import es.safareyes.schoolevents.modelos.Evento;
 import es.safareyes.schoolevents.repositorios.EventoRepository;
 import org.junit.jupiter.api.Test;
@@ -21,30 +21,30 @@ class EventoRepositoryTest {
 
     @Test
     void consultarDetallesEvento() {
-        DetallesEvento detallesEvento = eventoRepository.detallesEvento(1);
+        Evento eventoDetalleResponse = eventoRepository.detallesEvento(1);
 
 
-        System.out.println(
-                    "Lugar: " + detallesEvento.getLugar() + " | " +
-                    "Cursos: " + Arrays.toString(detallesEvento.getCursos()) + " | " +
-                    "Plazas libres: " + detallesEvento.getPlazasLibres() + " | " +
-                    "Requisitos: " + Arrays.toString(detallesEvento.getRequisitos()
-                )
-        );
+//        System.out.println(
+//                    "Lugar: " + eventoDetalleResponse.getLugar() + " | " +
+//                    "Cursos: " + Arrays.toString(eventoDetalleResponse.getCursos()) + " | " +
+//                    "Plazas libres: " + eventoDetalleResponse.getPlazasLibres() + " | " +
+//                    "Requisitos: " + Arrays.toString(eventoDetalleResponse.getRequisitos()
+//                )
+//        );
     }
 
     @Test
     void consultarEventosDelMes() {
-        List<EventosDelMes> eventosDelMes = eventoRepository.eventosDelMesPorDia(11, 2026);
+        List<Evento> eventoCalendarioResponse = eventoRepository.eventosDelMesPorDia(11, 2026);
 
-        eventosDelMes.forEach(em ->
-                System.out.println(
-                        "Día: " + em.getDia() + " | " +
-                        "Título: " + em.getTitulo() + " | " +
-                        "Icono: " + em.getIcono() + " | " +
-                        "Color: " + em.getColor() + "\n"
-                )
-        );
+//        eventoCalendarioResponse.forEach(em ->
+//                System.out.println(
+//                        "Día: " + em.getDia() + " | " +
+//                        "Título: " + em.getTitulo() + " | " +
+//                        "Icono: " + em.getIcono() + " | " +
+//                        "Color: " + em.getColor() + "\n"
+//                )
+//        );
     }
 
     @Test
@@ -53,11 +53,11 @@ class EventoRepositoryTest {
         List<Integer> categorias = List.of(1, 2, 3, 4, 5, 6);
         LocalDateTime desde = LocalDateTime.of(2026,9,1,0,0,0);
         LocalDateTime hasta = LocalDateTime.of(2026,12,31,23,59,59);
-        List<Evento> eventosFiltrados = eventoRepository.buscarEventosFiltrados(cursos, categorias, null, desde, hasta);
-
-        eventosFiltrados.forEach(ef -> System.out.println(
-                    "Título: " + ef.getTitulo()
-                )
-        );
+//        List<Evento> eventosFiltrados = eventoRepository.buscarEventosFiltrados(cursos, categorias, null, desde, hasta);
+//
+//        eventosFiltrados.forEach(ef -> System.out.println(
+//                    "Título: " + ef.getTitulo()
+//                )
+//        );
     }
 }
