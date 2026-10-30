@@ -1,15 +1,16 @@
 package es.safareyes.schoolevents.mappers;
 
+import es.safareyes.schoolevents.dto.response.EventoCalendarioNativoResponse;
 import es.safareyes.schoolevents.dto.response.EventoCalendarioResponse;
 import es.safareyes.schoolevents.dto.response.EventoDetalleResponse;
 import es.safareyes.schoolevents.dto.response.EventoResumenResponse;
-import es.safareyes.schoolevents.modelos.Curso;
 import es.safareyes.schoolevents.modelos.Evento;
-import es.safareyes.schoolevents.modelos.Requisito;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = { CategoriaMapper.class })
+import java.util.List;
+
+@Mapper(componentModel = "spring", uses = { CategoriaMapper.class, CursoMapper.class })
 public interface EventoMapper {
 
     @Mapping(target = "lugar", source = "lugar.nombre")
@@ -20,13 +21,6 @@ public interface EventoMapper {
     @Mapping(target = "enEspera", ignore = true)
     EventoResumenResponse aResumen(Evento evento);
 
-    EventoCalendarioResponse aCalendario(Evento evento);
-
-    default String cursoANombre(Curso curso) {
-        return curso.getNombre();
-    }
-
-    default String requisitoADescripcion(Requisito requisito) {
-        return requisito.getDescripcion();
-    }
+    @Mapping(target = "colorCategoria", source = "colorCategoria", qualifiedByName = "colorNativoACodHex")
+    EventoCalendarioResponse aCalendario(EventoCalendarioNativoResponse eventosCalendario);
 }

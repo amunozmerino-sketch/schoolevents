@@ -13,7 +13,7 @@ public record EventoDetalleResponse(Long id,
                                     Integer aforoMax,
                                     Integer aforoActual,
                                     Integer enEspera,
-                                    List<String> cursos,
+                                    List<CursoResumenResponse> cursos,
                                     CategoriaResumenResponse categoria,
-                                    List<String> requisitos
+                                    List<RequisitoResumenResponse> requisitos
 ) {}

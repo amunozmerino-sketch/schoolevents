@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public record EventoCalendarioResponse(Long id,
                                        String titulo,
                                        String lugar,
-                                       CategoriaSimplificadaResponse categoria,
+                                       String iconoCategoria,
+                                       String colorCategoria,
                                        LocalDateTime fechaHoraIni,
                                        LocalDateTime fechaHoraFin) {}
