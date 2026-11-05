@@ -11,5 +11,5 @@ public record EventoBorradorRequest(
         Integer aforoMax,
         List<Integer> idCursos,
         Integer idCategoria,
-        List<Integer> idRequisitos
+        List<String> idRequisitos
 ) {}

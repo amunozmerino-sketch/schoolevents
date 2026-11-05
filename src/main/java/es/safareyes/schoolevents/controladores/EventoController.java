@@ -1,9 +1,11 @@
 package es.safareyes.schoolevents.controladores;
 
+import es.safareyes.schoolevents.dto.request.EventoBorradorRequest;
 import es.safareyes.schoolevents.dto.response.EventoCalendarioResponse;
 import es.safareyes.schoolevents.dto.response.EventoDetalleResponse;
 import es.safareyes.schoolevents.dto.response.EventoResumenResponse;
 import es.safareyes.schoolevents.servicios.EventoServiceImpl;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,14 +32,19 @@ public class EventoController {
         return eventoServiceImpl.consultarDetallesEvento(id);
     }
 
-    @GetMapping("/calendario?{mes}=&{ano}=")
-    public List<EventoCalendarioResponse> consultarCalendario(@PathVariable Integer mes,
-                                                              @PathVariable Integer ano) {
+    @GetMapping("/calendario")
+    public List<EventoCalendarioResponse> consultarCalendario(@RequestParam Integer mes,
+                                                              @RequestParam Integer ano) {
         return eventoServiceImpl.consultarEventosDelMesPorDia(mes, ano);
     }
 
     @GetMapping("/categoria/{id}")
     public List<EventoResumenResponse> consultarPorCategoria(@PathVariable Integer id) {
         return eventoServiceImpl.consultarListaEventosporCategoria(id);
+    }
+
+    @PostMapping("/eventos")
+    public void crearEvento(@Valid @RequestBody EventoBorradorRequest json) {
+        eventoServiceImpl.crearEvento(json);
     }
 }

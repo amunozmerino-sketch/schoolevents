@@ -3,7 +3,6 @@ package es.safareyes.schoolevents.modelos;
 import es.safareyes.schoolevents.modelos.enums.EstadoEvento;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GeneratedColumn;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,9 +39,6 @@ public class Evento {
 
     @Column(name = "aforo_max", precision = 3)
     private Integer aforoMax;
-
-    @Column(name = "aforo_actual", precision = 3)
-    private Integer aforoActual;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_lugar")
