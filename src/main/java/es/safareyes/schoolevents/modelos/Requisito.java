@@ -20,4 +20,9 @@ public class Requisito {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_evento", nullable = false)
     private Evento evento;
+
+    public Requisito(String descripcion, Evento e){
+        this.descripcion = descripcion;
+        this.evento = e;
+    }
 }

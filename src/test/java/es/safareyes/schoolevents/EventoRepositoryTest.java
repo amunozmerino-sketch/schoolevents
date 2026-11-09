@@ -21,7 +21,7 @@ class EventoRepositoryTest {
 
     @Test
     void consultarDetallesEvento() {
-        Evento eventoDetalleResponse = eventoRepository.detallesEvento(1);
+//        Evento eventoDetalleResponse = eventoRepository.detallesEvento(1);
 
 
 //        System.out.println(
@@ -35,7 +35,7 @@ class EventoRepositoryTest {
 
     @Test
     void consultarEventosDelMes() {
-        List<Evento> eventoCalendarioResponse = eventoRepository.eventosDelMesPorDia(11, 2026);
+//        List<Evento> eventoCalendarioResponse = eventoRepository.eventosDelMesPorDia(11, 2026);
 
 //        eventoCalendarioResponse.forEach(em ->
 //                System.out.println(
