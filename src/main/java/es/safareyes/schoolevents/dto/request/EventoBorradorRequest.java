@@ -8,8 +8,9 @@ public record EventoBorradorRequest(
         Integer idLugar,
         String fechaHoraIni,
         String fechaHoraFin,
+        String fechaHoraLimite,
         Integer aforoMax,
         List<Integer> idCursos,
         Integer idCategoria,
-        List<String> idRequisitos
+        List<String> requisitos
 ) {}

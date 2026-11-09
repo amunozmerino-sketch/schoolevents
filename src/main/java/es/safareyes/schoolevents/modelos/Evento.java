@@ -55,6 +55,6 @@ public class Evento {
     @ManyToOne(fetch = FetchType.LAZY)
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Requisito> requisitos;
 }

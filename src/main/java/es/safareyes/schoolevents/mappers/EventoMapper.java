@@ -25,6 +25,7 @@ public interface EventoMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "lugar", ignore = true)
+    @Mapping(target = "estado", ignore = true)
     @Mapping(target = "cursos", ignore = true)
     @Mapping(target = "categoria", ignore = true)
     @Mapping(target = "requisitos", ignore = true)

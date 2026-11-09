@@ -47,4 +47,14 @@ public class EventoController {
     public void crearEvento(@Valid @RequestBody EventoBorradorRequest json) {
         eventoServiceImpl.crearEvento(json);
     }
+
+    @DeleteMapping("/{id}")
+    public void eliminarEvento(@PathVariable Integer id) {
+        eventoServiceImpl.eliminarEvento(id);
+    }
+
+    @PatchMapping("/{id}")
+    public void cancelarEvento(@PathVariable Integer id) {
+        eventoServiceImpl.cancelarEvento(id);
+    }
 }
