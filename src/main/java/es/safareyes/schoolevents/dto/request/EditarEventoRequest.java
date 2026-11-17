@@ -8,6 +8,7 @@ public record EditarEventoRequest(
         Integer idLugar,
         String fechaHoraIni,
         String fechaHoraFin,
+        String fechaHoraLimite,
         Integer aforoMax,
         List<Integer> idCursos,
         Integer idCategoria,

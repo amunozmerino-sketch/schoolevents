@@ -24,6 +24,9 @@ public class Evento {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @Column(name = "foto", length = 150)
+    private String foto;
+
     @Column(name = "fecha_hora_ini")
     private LocalDateTime fechaHoraIni;
 
@@ -53,8 +56,13 @@ public class Evento {
     private List<Curso> cursos;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Requisito> requisitos;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario_autor")
+    private Usuario usuarioAutor;
 }

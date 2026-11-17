@@ -3,10 +3,14 @@ package es.safareyes.schoolevents.servicios;
 import es.safareyes.schoolevents.dto.request.EventoBorradorRequest;
 import es.safareyes.schoolevents.dto.response.EventoCalendarioResponse;
 import es.safareyes.schoolevents.dto.response.EventoDetalleResponse;
+import es.safareyes.schoolevents.dto.response.EventoResponse;
 import es.safareyes.schoolevents.dto.response.EventoResumenResponse;
+import es.safareyes.schoolevents.excepciones.RecursoNoEncontradoException;
+import es.safareyes.schoolevents.excepciones.ReglaNegocioException;
 import es.safareyes.schoolevents.excepciones.RelacionNoEncontradaException;
 import es.safareyes.schoolevents.mappers.EventoMapper;
 import es.safareyes.schoolevents.modelos.*;
+import es.safareyes.schoolevents.modelos.enums.EstadoEvento;
 import es.safareyes.schoolevents.repositorios.*;
 import es.safareyes.schoolevents.specifications.EventoSpecs;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,7 @@ public class EventoServiceImpl implements EventoService {
     private final CategoriaRepository categoriaRepository;
     private final UsuarioInscritoRepository usuarioInscritoRepository;
     private final LugarRepository lugarRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public List<EventoResumenResponse> consultarEventosConFiltros(String titulo, Integer categoria, List<Integer> cursos, LocalDateTime fechaHoraIni, LocalDateTime fechaHoraFin) {
@@ -43,7 +48,8 @@ public class EventoServiceImpl implements EventoService {
                 .map(eventoMapper::aResumen)
                 .toList();
 
-        eventosResumidos.forEach(e-> e.setEnEspera(usuarioInscritoRepository.countUsuarioInscritoByEnEsperaAndEvento_Id(true, e.getId())));
+        eventosResumidos.forEach(e -> e.setEnEspera(usuarioInscritoRepository.countUsuarioInscritoByEnEsperaAndEvento_Id(true, e.getId())));
+        eventosResumidos.forEach(e -> e.setAforoActual(usuarioInscritoRepository.countUsuarioInscritoByEnEsperaAndEvento_Id(false, e.getId())));
 
         return eventosResumidos;
     }
@@ -51,7 +57,7 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public EventoDetalleResponse consultarDetallesEvento(Integer id) {
         Evento evento = eventoRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new RecursoNoEncontradoException("Evento no encontrado."));
         return eventoMapper.aDetalle(evento);
     }
 
@@ -75,19 +81,82 @@ public class EventoServiceImpl implements EventoService {
         return eventosResumidos;
     }
 
-    public void crearEvento(EventoBorradorRequest dto) {
+    public EventoResponse crearEvento(EventoBorradorRequest dto) {
         Evento nuevoEvento = eventoMapper.aEntidad(dto);
 
-        Lugar lugar = lugarRepository.findById(dto.idLugar()).orElseThrow(() -> new RelacionNoEncontradaException("No existe el lugar indicado."));
+        if (nuevoEvento.getFechaHoraIni().isAfter(nuevoEvento.getFechaHoraFin())) {
+            throw new ReglaNegocioException("La fecha de inicio no puede ser posterior a la fecha fin");
+        }
 
-        Categoria categoria = categoriaRepository.findById(dto.idCategoria()).orElseThrow(() -> new RelacionNoEncontradaException("No existe la categoría indicada."));
+        if (nuevoEvento.getFechaHoraIni().isBefore(nuevoEvento.getFechaHoraLimite())) {
+            throw new ReglaNegocioException("La fecha de inicio no puede ser anterior a la fecha límite.");
+        }
 
-        List<Curso> cursos = dto.idCursos().stream().map(c -> cursoRepository.findById(c).orElseThrow( () -> new RelacionNoEncontradaException("No existe el curso indicado."))).toList();
+        if (dto.idLugar() == null) {
+            if (dto.aforoMax() != null) {
+                throw new ReglaNegocioException("No puedes poner aforo máximo sin especificar el lugar.");
+            }
+        } else {
+            Lugar lugar = lugarRepository.findById(dto.idLugar()).orElseThrow(() -> new RelacionNoEncontradaException("Lugar no encontrado."));
 
-//        List<Requisito> requisitos = dto.idRequisitos().stream().map(r -> new Requisito(r, nuevoEvento.getId()));
+            if (dto.aforoMax() != null) {
+                if (dto.aforoMax() > lugar.getAforoMax()) {
+                    throw new ReglaNegocioException("El aforo máximo del evento no puede ser mayor que el del lugar.");
+                }
+            }
 
-        nuevoEvento.setCategoria(categoria);
-        nuevoEvento.setCursos(cursos);
+            nuevoEvento.setLugar(lugar);
+        }
+
+        if (dto.idCategoria() != null) {
+            Categoria categoria = categoriaRepository.findById(dto.idCategoria()).orElseThrow(() -> new RelacionNoEncontradaException("Categoría no encontrada."));
+            nuevoEvento.setCategoria(categoria);
+        }
+
+        if (dto.idCursos() != null) {
+            List<Curso> cursos = dto.idCursos()
+                    .stream()
+                    .map(c -> cursoRepository.findById(c).orElseThrow(() -> new RelacionNoEncontradaException("Curso no encontrado.")))
+                    .toList();
+
+            nuevoEvento.setCursos(cursos);
+        }
+
+        if (dto.requisitos() != null) {
+            List<Requisito> requisitos = dto.requisitos()
+                    .stream()
+                    .map(d -> new Requisito(d, nuevoEvento))
+                    .toList();
+
+            nuevoEvento.setRequisitos(requisitos);
+        }
+
+        Usuario usuarioAutor = usuarioRepository.findById(dto.idUsuarioAutor()).orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado."));
+
+        nuevoEvento.setUsuarioAutor(usuarioAutor);
+        nuevoEvento.setEstado(EstadoEvento.EN_BORRADOR);
         eventoRepository.save(nuevoEvento);
+        return eventoMapper.aResponse(nuevoEvento);
+    }
+
+    public void cancelarEvento(Integer id) {
+        Evento evento = eventoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Evento no encontrado."));
+
+        if (evento.getEstado() != EstadoEvento.CANCELADO) {
+            evento.setEstado(EstadoEvento.CANCELADO);
+            eventoRepository.save(evento);
+        } else {
+            throw new ReglaNegocioException("El evento ya está cancelado.");
+        }
+    }
+
+    public void eliminarEvento(Integer id) {
+        Evento evento = eventoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Evento no encontrado."));
+
+        if (evento.getEstado() == EstadoEvento.CANCELADO || evento.getEstado() == EstadoEvento.EN_BORRADOR) {
+            eventoRepository.deleteById(id);
+        } else {
+            throw new ReglaNegocioException("No se puede eliminar un evento que está publicado o finalizado.");
+        }
     }
 }

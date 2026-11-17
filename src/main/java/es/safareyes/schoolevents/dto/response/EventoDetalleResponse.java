@@ -14,6 +14,8 @@ public class EventoDetalleResponse {
 
     String titulo;
 
+    String foto;
+
     String descripcion;
 
     String lugar;
@@ -25,6 +27,8 @@ public class EventoDetalleResponse {
     String horaFin;
 
     String fechaLimite;
+
+    Integer aforoActual;
 
     Integer aforoMax;
 

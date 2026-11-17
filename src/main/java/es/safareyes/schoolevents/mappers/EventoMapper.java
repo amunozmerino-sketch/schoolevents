@@ -1,10 +1,7 @@
 package es.safareyes.schoolevents.mappers;
 
 import es.safareyes.schoolevents.dto.request.EventoBorradorRequest;
-import es.safareyes.schoolevents.dto.response.EventoCalendarioNativoResponse;
-import es.safareyes.schoolevents.dto.response.EventoCalendarioResponse;
-import es.safareyes.schoolevents.dto.response.EventoDetalleResponse;
-import es.safareyes.schoolevents.dto.response.EventoResumenResponse;
+import es.safareyes.schoolevents.dto.response.*;
 import es.safareyes.schoolevents.modelos.Evento;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,10 +10,21 @@ import org.mapstruct.Mapping;
 public interface EventoMapper {
 
     @Mapping(target = "lugar", source = "lugar.nombre")
+    @Mapping(target = "fechaHoraIni", source = "fechaHoraIni", qualifiedByName = "fechaCompletaAString")
+    @Mapping(target = "fechaHoraFin", source = "fechaHoraFin", qualifiedByName = "fechaCompletaAString")
+    @Mapping(target = "fechaHoraLimite", source = "fechaHoraLimite", qualifiedByName = "fechaCompletaAString")
+    EventoResponse aResponse(Evento evento);
+
+    @Mapping(target = "lugar", source = "lugar.nombre")
     @Mapping(target = "enEspera", ignore = true)
     EventoDetalleResponse aDetalle(Evento evento);
 
     @Mapping(target = "colorCategoria", source = "categoria.color")
+    @Mapping(target = "fechaIni", source = "fechaHoraIni", qualifiedByName = "fechaAString")
+    @Mapping(target = "fechaLimite", source = "fechaHoraLimite", qualifiedByName = "fechaAString")
+    @Mapping(target = "horaIni", source = "fechaHoraIni", qualifiedByName = "horaAString")
+    @Mapping(target = "horaFin", source = "fechaHoraFin", qualifiedByName = "horaAString")
+    @Mapping(target = "aforoActual", ignore = true)
     @Mapping(target = "enEspera", ignore = true)
     EventoResumenResponse aResumen(Evento evento);
 
@@ -25,8 +33,10 @@ public interface EventoMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "lugar", ignore = true)
+    @Mapping(target = "estado", ignore = true)
     @Mapping(target = "cursos", ignore = true)
     @Mapping(target = "categoria", ignore = true)
     @Mapping(target = "requisitos", ignore = true)
+    @Mapping(target = "usuarioAutor", ignore = true)
     Evento aEntidad(EventoBorradorRequest eventoBorrador);
 }
