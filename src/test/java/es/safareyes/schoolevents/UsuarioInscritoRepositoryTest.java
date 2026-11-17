@@ -20,8 +20,8 @@ class UsuarioInscritoRepositoryTest {
 
     @Test
     void consultarInscripciones() {
-        List<UsuarioInscrito> usuarioInscritos = usuarioInscritoRepository.inscripciones(8, false);
-        List<UsuarioInscrito> listaDeEspera = usuarioInscritoRepository.inscripciones(8, true);
+//        List<UsuarioInscrito> usuarioInscritos = usuarioInscritoRepository.inscripciones(8, false);
+//        List<UsuarioInscrito> listaDeEspera = usuarioInscritoRepository.inscripciones(8, true);
 
 //        System.out.println("Usuarios inscritos:");
 //

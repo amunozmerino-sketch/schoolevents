@@ -18,6 +18,6 @@ public class Curso {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "nombre", length = 150)
+    @Column(name = "nombre", length = 150, nullable = false)
     private String nombre;
 }

@@ -13,6 +13,8 @@ public class EventoResumenResponse {
 
     String titulo;
 
+    String foto;
+
     Integer aforoActual;
 
     Integer aforoMax;
@@ -21,9 +23,11 @@ public class EventoResumenResponse {
 
     String colorCategoria;
 
-    LocalDateTime fechaHoraIni;
+    String fechaIni;
 
-    LocalDateTime fechaHoraFin;
+    String fechaLimite;
 
-    LocalDateTime fechaHoraLimite;
+    String horaIni;
+
+    String horaFin;
 }

@@ -1,3 +1,3 @@
 package es.safareyes.schoolevents.dto.response;
 
-public record RequisitoResumenResponse(String descripcion) {}
+public record RequisitoResumenResponse(Integer id, String descripcion) {}

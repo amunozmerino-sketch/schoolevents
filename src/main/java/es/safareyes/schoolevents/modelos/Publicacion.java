@@ -17,7 +17,7 @@ public class Publicacion {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "texto")
+    @Column(name = "texto", length = 2000)
     private String texto;
 
     @Column(name = "fecha_hora")

@@ -19,7 +19,7 @@ public final class EventoSpecs {
 
     public static Specification<Evento> cursosIn(List<Integer> cursos) {
         return (root, query, cb) -> {
-          if (cursos.isEmpty()) return null;
+          if (cursos == null || cursos.isEmpty()) return null;
           return root.join("cursos", JoinType.LEFT).get("id").in(cursos);
         };
     }

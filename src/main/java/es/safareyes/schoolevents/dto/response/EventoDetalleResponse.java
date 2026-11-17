@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -13,6 +12,8 @@ public class EventoDetalleResponse {
     Integer id;
 
     String titulo;
+
+    String foto;
 
     String descripcion;
 
@@ -26,13 +27,15 @@ public class EventoDetalleResponse {
 
     String fechaLimite;
 
+    Integer aforoActual;
+
     Integer aforoMax;
 
     Integer enEspera;
 
-    List<CursoResumenResponse> cursos;
+    List<CursoResponse> cursos;
 
-    CategoriaResumenResponse categoria;
+    CategoriaResponse categoria;
 
     List<RequisitoResumenResponse> requisitos;
 }

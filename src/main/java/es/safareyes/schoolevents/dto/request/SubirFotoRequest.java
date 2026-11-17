@@ -7,8 +7,8 @@ import java.util.List;
 
 public record SubirFotoRequest(
         @NotNull(message = "Hay que indicar la publicación")
-        Long idPublicacion,
+        Integer idPublicacion,
 
         @NotEmpty(message = "Hay que indicar las fotos a subir")
-        List<@NotNull Integer> fotos
+        List<@NotNull(message = "Hay que indicar las fotos a subir") Integer> fotos
 ) {}

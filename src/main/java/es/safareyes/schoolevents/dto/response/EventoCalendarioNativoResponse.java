@@ -2,7 +2,7 @@ package es.safareyes.schoolevents.dto.response;
 
 import java.time.LocalDateTime;
 
-public record EventoCalendarioNativoResponse(Long id,
+public record EventoCalendarioNativoResponse(Integer id,
                                              String titulo,
                                              String lugar,
                                              String iconoCategoria,

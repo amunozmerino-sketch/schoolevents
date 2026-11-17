@@ -17,13 +17,13 @@ public class Categoria {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "nombre", length = 50)
+    @Column(name = "nombre", length = 50, nullable = false)
     private String nombre;
 
-    @Column(name = "icono", length = 150)
+    @Column(name = "icono", length = 150, nullable = false)
     private String icono;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "color", precision = 1)
+    @Column(name = "color", precision = 1, nullable = false)
     private ColorCategoria color;
 }

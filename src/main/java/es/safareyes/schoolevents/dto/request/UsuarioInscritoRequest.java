@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 public record UsuarioInscritoRequest(
 
         @NotNull(message = "Hay que indicar el usuario")
-        Long idUsuario,
+        Integer idUsuario,
 
         @NotNull(message = "Hay que indicar el evento")
-        Long idEvento
+        Integer idEvento
 ) {}
