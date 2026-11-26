@@ -1,6 +1,8 @@
 package es.safareyes.schoolevents.servicios;
 
+import es.safareyes.schoolevents.dto.request.EditarEventoRequest;
 import es.safareyes.schoolevents.dto.request.EventoBorradorRequest;
+import es.safareyes.schoolevents.dto.request.EventoEstadoRequest;
 import es.safareyes.schoolevents.dto.response.EventoCalendarioResponse;
 import es.safareyes.schoolevents.dto.response.EventoDetalleResponse;
 import es.safareyes.schoolevents.dto.response.EventoResponse;
@@ -13,6 +15,7 @@ import es.safareyes.schoolevents.modelos.*;
 import es.safareyes.schoolevents.modelos.enums.EstadoEvento;
 import es.safareyes.schoolevents.repositorios.*;
 import es.safareyes.schoolevents.specifications.EventoSpecs;
+import es.safareyes.schoolevents.validaciones.PublicarEvento;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -184,33 +187,40 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public void cancelarEvento(Integer id) {
+    public void cambiarEstado(Integer id, EventoEstadoRequest dto) {
         Evento evento = eventoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Evento no encontrado"));
 
-        if (evento.getEstado() != EstadoEvento.CANCELADO) {
-            evento.setEstado(EstadoEvento.CANCELADO);
-            eventoRepository.save(evento);
-        } else {
-            throw new ReglaNegocioException("El evento ya está cancelado");
-        }
-    }
+        try {
+            switch (EstadoEvento.valueOf(dto.estado().strip())) {
+                case PUBLICADO -> {
+                    if (evento.getEstado() != EstadoEvento.PUBLICADO) {
+                        Set<ConstraintViolation<Evento>> errores =
+                                validator.validate(evento, PublicarEvento.class);
 
-    @Override
-    public void publicarEvento(Integer id) {
-        Evento evento = eventoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Evento no encontrado"));
+                        if (!errores.isEmpty()) {
+                            throw new ConstraintViolationException(errores);
+                        }
 
-        if (evento.getEstado() != EstadoEvento.PUBLICADO) {
-            Set<ConstraintViolation<Evento>> errores =
-                    validator.validate(evento, Publicacion.class);
+                        evento.setEstado(EstadoEvento.PUBLICADO);
+                        eventoRepository.save(evento);
+                    } else {
+                        throw new ReglaNegocioException("El evento ya está publicado");
+                    }
+                }
 
-            if (!errores.isEmpty()) {
-                throw new ConstraintViolationException(errores);
+                case CANCELADO -> {
+                    if (evento.getEstado() != EstadoEvento.CANCELADO) {
+                        evento.setEstado(EstadoEvento.CANCELADO);
+                        eventoRepository.save(evento);
+                    } else {
+                        throw new ReglaNegocioException("El evento ya está cancelado");
+                    }
+                }
+
+                default -> throw new ReglaNegocioException("No se puede finalizar ni poner en borrador manualmente");
             }
-
-            evento.setEstado(EstadoEvento.PUBLICADO);
-            eventoRepository.save(evento);
-        } else {
-            throw new ReglaNegocioException("El evento ya está publicado");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("El valor del estado no es válido");
         }
     }
 
@@ -225,7 +235,15 @@ public class EventoServiceImpl implements EventoService {
         }
     }
 
-    public void editarEvento() {
+    public void editarEvento(Integer id, EditarEventoRequest dto) {
+        Evento evento = eventoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Evento no encontrado"));
 
+        if (evento.getEstado() == EstadoEvento.PUBLICADO) {
+
+        }
+
+        if (evento.getEstado() == EstadoEvento.EN_BORRADOR) {
+
+        }
     }
 }

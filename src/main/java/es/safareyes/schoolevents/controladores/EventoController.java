@@ -1,6 +1,8 @@
 package es.safareyes.schoolevents.controladores;
 
+import es.safareyes.schoolevents.dto.request.EditarEventoRequest;
 import es.safareyes.schoolevents.dto.request.EventoBorradorRequest;
+import es.safareyes.schoolevents.dto.request.EventoEstadoRequest;
 import es.safareyes.schoolevents.dto.response.EventoCalendarioResponse;
 import es.safareyes.schoolevents.dto.response.EventoDetalleResponse;
 import es.safareyes.schoolevents.dto.response.EventoResponse;
@@ -18,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/eventos")
+@RequestMapping("/api/v1/eventos")
 @AllArgsConstructor
 public class EventoController {
     private EventoServiceImpl eventoServiceImpl;
@@ -66,13 +68,8 @@ public class EventoController {
     }
 
     @PatchMapping("/{id}/estado")
-    public void cancelarEvento(@PathVariable Integer id) {
-        eventoServiceImpl.cancelarEvento(id);
-    }
-
-    @PatchMapping("/{id}/estado")
-    public void publicarEvento(@PathVariable Integer id) {
-        eventoServiceImpl.cancelarEvento(id);
+    public void cambiarEstadoEvento(@PathVariable Integer id, @Valid @RequestBody EventoEstadoRequest json) {
+        eventoServiceImpl.cambiarEstado(id, json);
     }
 
     @DeleteMapping("/{id}")
@@ -80,7 +77,9 @@ public class EventoController {
     public void eliminarEvento(@PathVariable Integer id) {
         eventoServiceImpl.eliminarEvento(id);
     }
-//    public void editarEvento(@PathVariable Integer id, @Valid @RequestBody ) {
 
-//    }
+    @PutMapping("/{id}")
+    public void editarEvento(@PathVariable Integer id, @Valid @RequestBody EditarEventoRequest json) {
+        eventoServiceImpl.editarEvento(id, json);
+    }
 }

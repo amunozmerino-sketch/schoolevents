@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CursoMapper {
 
-    CursoResponse aResumen(Curso curso);
+    CursoResponse aResponse(Curso curso);
 
-    List<CursoResponse> aListaResumen(List<Curso> cursos);
+    List<CursoResponse> aListaResponse(List<Curso> cursos);
 }

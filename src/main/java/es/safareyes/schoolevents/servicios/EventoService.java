@@ -1,6 +1,7 @@
 package es.safareyes.schoolevents.servicios;
 
 import es.safareyes.schoolevents.dto.request.EventoBorradorRequest;
+import es.safareyes.schoolevents.dto.request.EventoEstadoRequest;
 import es.safareyes.schoolevents.dto.response.EventoCalendarioResponse;
 import es.safareyes.schoolevents.dto.response.EventoDetalleResponse;
 import es.safareyes.schoolevents.dto.response.EventoResponse;
@@ -16,7 +17,6 @@ public interface EventoService {
     List<EventoResumenResponse> consultarEventosProximos();
     EventoResponse crearEvento(EventoBorradorRequest dto);
     EventoDetalleResponse consultarDetallesEvento(Integer id);
-    void cancelarEvento(Integer id);
-    void publicarEvento(Integer id);
+    void cambiarEstado(Integer id, EventoEstadoRequest dto);
     void eliminarEvento(Integer id);
 }

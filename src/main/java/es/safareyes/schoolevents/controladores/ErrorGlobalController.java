@@ -68,6 +68,11 @@ public class ErrorGlobalController {
         return construir(HttpStatus.CONFLICT, "Conflicto de integridad", "La operación viola una restricción de la base de datos");
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail parametroInvalido(IllegalArgumentException e) {
+        return construir(HttpStatus.BAD_REQUEST, "Parámetro inválido", e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail errorInesperado(Exception e) {
         log.error("Error no controlado", e);

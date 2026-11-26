@@ -1,12 +1,8 @@
 package es.safareyes.schoolevents.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record EventoEstadoRequest(
-
-        @NotNull(message = "Hay que indicar el evento a cambiar")
-        Integer id,
-
-        @NotNull(message = "Hay que indicar el estado nuevo")
-        Integer estado
+        @NotBlank(message = "Hay que indicar el estado nuevo")
+        String estado
 ) {}
